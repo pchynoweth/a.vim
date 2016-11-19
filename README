@@ -1,3 +1,9 @@
+**This is a FORK of https://github.com/nacitar/a.vim
+
+Changes are licensed under the same terms as the original
+
+# Original README
+
 This is a mirror of http://www.vim.org/scripts/script.php?script_id=31
 
 A few of quick commands to switch between source files and header files quickly.
