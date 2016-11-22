@@ -39,16 +39,9 @@ endif
 
 let alternateExtensionsDict = {}
 
-" setup the default set of alternate extensions. The user can override in thier
-" .vimrc if the defaults are not suitable. To override in a .vimrc simply set a
-" g:alternateExtensions_<FILETYPE>_<EXT> variable to a comma separated list of alternates,
-" where <EXT> is the extension to map.
-" E.g. let g:alternateExtensions_cpp_CPP = "inc,h,H,HPP,hpp"
-"      let g:alternateExtensions_aspx_{'aspx.cs'} = "aspx"
-
 " This variable will be increased when an extension with greater number of dots
 " is added by the AddAlternateExtensionMapping call.
-let s:maxDotsInExtension = 1
+let g:alternateMaxDotsInExtension = 1
 
 " Function : AddAlternateExtensionMapping (PRIVATE)
 " Purpose  : simple helper function to add the default alternate extension
@@ -63,8 +56,8 @@ function! <SID>AddAlternateExtensionMapping(filetype, extension, alternates)
    endif
    let g:alternateExtensionsDict[a:filetype][a:extension] = a:alternates
    let dotsNumber = strlen(substitute(a:extension, "[^.]", "", "g"))
-   if s:maxDotsInExtension < dotsNumber
-     let s:maxDotsInExtension = dotsNumber
+   if g:alternateMaxDotsInExtension < dotsNumber
+     let g:alternateMaxDotsInExtension = dotsNumber
    endif
 endfunction
 
@@ -279,10 +272,9 @@ function! EnumerateFilesByExtension(path, baseName, extension)
 
    let enumeration = ""
    let extSpec = ""
-   let v:errmsg = ""
-   silent! echo g:alternateExtensions_{&filetype}_{a:extension}
-   if (v:errmsg == "")
-      let extSpec = g:alternateExtensions_{&filetype}_{a:extension}
+   if exists('b:alternateExtensionsDict') && has_key(b:alternateExtensionsDict, &filetype) &&
+                \ has_key(b:alternateExtensionsDict[&filetype], a:extension)
+      let extSpec = b:alternateExtensionsDict[&filetype][a:extension]
    endif
    if (extSpec == "")
       if (has_key(g:alternateExtensionsDict[&filetype], a:extension))
@@ -342,42 +334,32 @@ endfunction
 "            extensions which contain less than 5 dots. This is only
 "            implemented in this manner for simplicity...it is doubtful that
 "            this will be a restriction in non-contrived situations.
+"            Add support for the case where one extension is a superset
+"            of another one (e.g., ".d" and ".abc.d") by looking for the
+"            longest matching extension
 " Args     : The path to the file to find the extension in
 " Returns  : The matched extension if any
 " Author   : Michael Sharpe (feline@irendi.com)
 " History  : idea from Tom-Erik Duestad
-" Notes    : there is some magic occuring here. The exists() function does not
-"            work well when the curly brace variable has dots in it. And why
-"            should it, dots are not valid in variable names. But the exists
-"            function is wierd too. Lets say foo_c does exist. Then
-"            exists("foo_c.e.f") will be true...even though the variable does
-"            not exist. However the curly brace variables do work when the
-"            variable has dots in it. E.g foo_{'c'} is different from
-"            foo_{'c.d.e'}...and foo_{'c'} is identical to foo_c and
-"            foo_{'c.d.e'} is identical to foo_c.d.e right? Yes in the current
-"            implementation of vim. To trick vim to test for existence of such
-"            variables echo the curly brace variable and look for an error
-"            message.
 function! DetermineExtension(path)
   if (!has_key(g:alternateExtensionsDict, &filetype))
     return ""
   endif
+  let result = ""
   let mods = ":t"
   let i = 0
-  while i <= s:maxDotsInExtension
+  while i <= g:alternateMaxDotsInExtension
     let mods = mods . ":e"
     let extension = fnamemodify(a:path, mods)
     if (has_key(g:alternateExtensionsDict[&filetype], extension))
-       return extension
-    endif
-    let v:errmsg = ""
-    silent! echo g:alternateExtensions_{&filetype}_{extension}
-    if (v:errmsg == "")
-      return extension
+      let result = extension
+    elseif exists('b:alternateExtensionsDict') && has_key(b:alternateExtensionsDict, &filetype) &&
+                \ has_key(b:alternateExtensionsDict[&filetype], extension)
+      let result = extension
     endif
     let i = i + 1
   endwhile
-  return ""
+  return result
 endfunction
 
 " Function : AlternateFile (PUBLIC)
