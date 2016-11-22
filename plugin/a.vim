@@ -80,7 +80,7 @@ endfunction
 " Add all the default extensions
 " Mappings for C
 call <SID>AddAlternateExtensionMappingLowerAndUpper('c', 'c', 'h')
-call <SID>AddAlternateExtensionMappingLowerAndUpper('c', 'h', 'h')
+call <SID>AddAlternateExtensionMappingLowerAndUpper('c', 'h', 'c')
 " Mappings for C++
 call <SID>AddAlternateExtensionMappingLowerAndUpperTwoTypes('cpp', 'cpp11', 'h', 'cpp,cc,cxx,c,mm,m,cu')
 call <SID>AddAlternateExtensionMappingLowerAndUpperTwoTypes('cpp', 'cpp11', 'cpp', 'h,hpp')
