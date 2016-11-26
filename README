@@ -1,4 +1,14 @@
-**This is a FORK of https://github.com/nacitar/a.vim
+This is a FORK of https://github.com/nacitar/a.vim
+
+Changes:
+
+- Fix typo in definition of C extension mappings
+- Change override mechanism from g:alternateExtensions_{filetype}_{extension} to
+  b:alternateExtensionsDict so that extensions with multiple dots ('.') can be
+  configured in override. Allow maxDotsInExtension to be overridden.
+- When determining extension, search for longest match so that an extension that
+  includes another valid extension as a substring (e.g., ".abc.d" and ".d") is
+  detected correctly
 
 Changes are licensed under the same terms as the original
 
