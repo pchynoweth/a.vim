@@ -75,11 +75,10 @@ endfunction
 call <SID>AddAlternateExtensionMappingLowerAndUpper('c', 'c', 'h')
 call <SID>AddAlternateExtensionMappingLowerAndUpper('c', 'h', 'c')
 " Mappings for C++
-call <SID>AddAlternateExtensionMappingLowerAndUpperTwoTypes('cpp', 'cpp11', 'h', 'cpp,cc,cxx,c,mm,m,cu,inl')
-call <SID>AddAlternateExtensionMappingLowerAndUpperTwoTypes('cpp', 'cpp11', 'inl', 'h,hpp,cxx,cpp')
-call <SID>AddAlternateExtensionMappingLowerAndUpperTwoTypes('cpp', 'cpp11', 'cpp', 'h,hpp,inl')
-call <SID>AddAlternateExtensionMappingLowerAndUpperTwoTypes('cpp', 'cpp11', 'cxx', 'h,hxx,inl')
-call <SID>AddAlternateExtensionMappingLowerAndUpperTwoTypes('cpp', 'cpp11', 'hpp', 'cpp,inl')
+call <SID>AddAlternateExtensionMappingLowerAndUpperTwoTypes('cpp', 'cpp11', 'h', 'cpp,cc,cxx,c,mm,m,cu')
+call <SID>AddAlternateExtensionMappingLowerAndUpperTwoTypes('cpp', 'cpp11', 'cpp', 'h,hpp')
+call <SID>AddAlternateExtensionMappingLowerAndUpperTwoTypes('cpp', 'cpp11', 'cxx', 'h,hxx')
+call <SID>AddAlternateExtensionMappingLowerAndUpperTwoTypes('cpp', 'cpp11', 'hpp', 'cpp')
 call <SID>AddAlternateExtensionMappingLowerAndUpperTwoTypes('cpp', 'cpp11', 'hh', 'cc')
 call <SID>AddAlternateExtensionMappingLowerAndUpperTwoTypes('cpp', 'cpp11', 'cc', 'hh,h')
 " Mappings for Cuda
